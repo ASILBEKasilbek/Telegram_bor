@@ -1,5 +1,6 @@
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
+
 
 def init_db():
     conn = sqlite3.connect("bot.db")
@@ -93,3 +94,20 @@ def get_channels():
     channels = c.fetchall()
     conn.close()
     return channels
+
+# Bugungi yangi qo'shilgan foydalanuvchilar soni
+def get_new_users_today():
+    today = datetime.now().date()
+    # Misol uchun: users jadvalidan bugungi sana bo'yicha foydalanuvchilarni sanash
+    return len([user for user in users if user["join_date"].date() == today])
+
+# Aktiv foydalanuvchilar soni (oxirgi 24 soat ichida faol bo'lganlar)
+def get_active_users():
+    last_24_hours = datetime.now() - timedelta(hours=24)
+    # Misol uchun: users jadvalidan oxirgi 24 soat ichida faol bo'lgan foydalanuvchilarni sanash
+    return len([user for user in users if user["last_activity"] >= last_24_hours])
+
+# Bloklangan foydalanuvchilar soni
+def get_blocked_users():
+    # Misol uchun: users jadvalidan bloklangan foydalanuvchilarni sanash
+    return len([user for user in users if user["is_blocked"]])
