@@ -60,7 +60,7 @@ build/
 dist/
 *.egg-info/
 *.egg
-
+bot.db
 
 
 handlers2.py
